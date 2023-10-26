@@ -10,7 +10,7 @@ import { firebaseAuth } from '../utils/firebase-config';
 import Slider from '../components/Slider';
 import SelectGenre from '../components/SelectGenre';
 
-export default function Movies() {
+export default function TVshows() {
     const [isScrolled, setIsScrolled] = useState(false);
     const movies = useSelector((state) => state.netflix.movies);
     const genres = useSelector((state) => state.netflix.genres);
@@ -25,7 +25,7 @@ export default function Movies() {
   
     useEffect(() => {
       if (genresLoaded) {
-        dispatch(fetchMovies({ genres, type: "movies" }));
+        dispatch(fetchMovies({ genres, type: "tv" }));
       }
     }, [genresLoaded]);
   
@@ -43,7 +43,7 @@ export default function Movies() {
         <Navbar isScrolled={isScrolled}/>
         </div>
         <div className="data">
-        <SelectGenre genres={genres} type="movie"/>
+        <SelectGenre genres={genres} type="tv"/>
             {
                 movies.length ? <Slider movies= {movies}/> :
                 <NotAvailable />
