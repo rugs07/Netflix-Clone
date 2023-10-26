@@ -6,6 +6,7 @@ import Signup from "./pages/Signup"
 import Player from './pages/Player'
 import Movies from './pages/Movies'
 import TVshows from './pages/TVshows'
+import UserLiked from './pages/UserLiked'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route exact path="/player" element={<Player/>}></Route>
         <Route exact path="/movies" element={<Movies/>}></Route>
         <Route exact path="/tv" element={<TVshows/>}></Route>
+        <Route exact path="/mylist" element={<UserLiked/>}></Route>
         <Route exact path="/" element={<Netflix/>}></Route>
       </Routes>
     </BrowserRouter>

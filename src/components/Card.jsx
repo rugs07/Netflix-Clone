@@ -1,60 +1,71 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 // import video from "../assets/video.mp4";
-import {IoPlayCircleSharp} from "react-icons/io5";
+import { IoPlayCircleSharp } from "react-icons/io5";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RiThumbUpFill, RiThumbDownFill } from "react-icons/ri";
 import { BiChevronDown } from "react-icons/bi";
 import { BsCheck } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { removeMovieFromLiked } from "../store";
-import axios from 'axios';
-import { firebaseAuth } from '../utils/firebase-config';
-import { onAuthStateChanged } from 'firebase/auth';
+import axios from "axios";
+import { firebaseAuth } from "../utils/firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
-export default function Card({movieData,isLiked = false}) {
-    const [isHovered,setIsHovered] = useState(false);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [email, setEmail] = useState(undefined);
+export default function Card({ movieData, isLiked = false }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState(undefined);
 
-    onAuthStateChanged(firebaseAuth, (currentUser) => {
-        if (currentUser) {
-          setEmail(currentUser.email);
-        } else navigate("/login");
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) {
+      setEmail(currentUser.email);
+    } else navigate("/login");
+  });
+
+  const addToList = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/user/add", {
+        email,
+        data: movieData,
       });
-
-      const addToList = async () => {
-        try {
-          await axios.post("http://localhost:5000/api/user/add", {
-            email,
-            data: movieData,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <Container onMouseEnter={()=> setIsHovered(true)}
-    onMouseLeave={()=> setIsHovered(false)}
+    <Container
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-        <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt="card" />
-        {
-            isHovered && (
-                <div className="hover">
-                    <div className="image-video-container">
-                        <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt="card" 
-                        onClick={()=>navigate("/player")}
-                         />
-                         <video src={""} autoPlay loop muted 
-                         onClick={()=> navigate("/player")}
-                         ></video>
-                    </div>
-                    <div className="info-container flex column">
-                        <h3 className="name" onClick={()=> navigate("/player")}>{movieData.name}</h3>
-                        <div className="icons flex j-between">
+      <img
+        src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
+        alt="card"
+      />
+      {isHovered && (
+        <div className="hover">
+          <div className="image-video-container">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
+              alt="card"
+              onClick={() => navigate("/player")}
+            />
+            <video
+              src={""}
+              autoPlay
+              loop
+              muted
+              onClick={() => navigate("/player")}
+            ></video>
+          </div>
+          <div className="info-container flex column">
+            <h3 className="name" onClick={() => navigate("/player")}>
+              {movieData.name}
+            </h3>
+            <div className="icons flex j-between">
               <div className="controls flex">
                 <IoPlayCircleSharp
                   title="Play"
@@ -67,7 +78,7 @@ export default function Card({movieData,isLiked = false}) {
                     title="Remove from List"
                     onClick={() =>
                       dispatch(
-                        removeMovieFromLiked({ movieId: movieData.id,email })
+                        removeMovieFromLiked({ movieId: movieData.id, email })
                       )
                     }
                   />
@@ -91,10 +102,10 @@ export default function Card({movieData,isLiked = false}) {
       )}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
- max-width: 230px;
+  max-width: 230px;
   width: 230px;
   height: 100%;
   cursor: pointer;
