@@ -81,7 +81,9 @@ import {
     async (email) => {
       const {
         data: { movies },
-      } = await axios.get(`http://localhost:5000/api/user/liked/${email}`);
+      } = await axios.get(`https://netflix-backend-mwh4.onrender.com/api/user/liked/${email}`);
+      //render ki link daalmni h yaha
+
       return movies;
     }
   );
@@ -91,7 +93,7 @@ import {
     async ({ movieId, email }) => {
       const {
         data: { movies },
-      } = await axios.put("http://localhost:5000/api/user/remove", {
+      } = await axios.put("https://netflix-backend-mwh4.onrender.com/api/user/remove", {
         email,
         movieId,
       });
